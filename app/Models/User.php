@@ -41,4 +41,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Timestamp関連付け
+     * 1対多
+     */
+    public function stamp()
+    {
+        return $this->hasMany(stamp::class);
+    }
 }

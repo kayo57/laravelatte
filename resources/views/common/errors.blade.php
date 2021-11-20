@@ -1,5 +1,7 @@
 <!---resources/views/common/errosrs.blade.php---->
-@if(count($errors) >0)
+@extends('Layouts.app')
+
+@if(count($errors) > 0)
 <div class="alert alert-danger">
   @foreach($errors->all() as $error)
   <p>{{ $error }}</p>

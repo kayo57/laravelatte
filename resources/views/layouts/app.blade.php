@@ -8,19 +8,18 @@
   <title>@yield('title')</title>
 </head>
 <style>
-
 </style>
 
 <body>
   <!-------打刻ページ-------->
-  <div class="content">
-    @yield('content')
-  </div>
-
-
+  <div class="content">@yield('content') </div>
   <!----会員登録画面ページ------>
   <div class="register">
     @yield('register')
+  </div>
+  <!-----バリテーションエラー---->
+  <div class="">
+
   </div>
 
 

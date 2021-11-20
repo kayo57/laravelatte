@@ -1,5 +1,5 @@
 {
-    "name": "laravel/laravel",
+    "name": "laravel/laravelatte",
     "type": "project",
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
@@ -10,7 +10,8 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/tinker": "^2.5",
+        "nesbot/carbon": "^2.54"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
