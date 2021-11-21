@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\Stamp;
-//use Illuminate\Http\Request;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
+//use log;
+use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Auth;
 
 //use validator;
@@ -12,26 +15,48 @@ use Carbon\Carbon;
 class AttendanceController extends Controller
 {
     //打刻一覧表示ページ
-    //public function index(Request $request)
-    //{
-        //return view('attendance');
-    //}
+    public function index(Request $request)
+    {
+        return view('auth.attendance');
+    }
     //打刻ページ（勤務開始）
     public function start()
     {
+        // Userのmodelクラスのインスタンスを生成
+        $user = new User();
+        // データベースに値をinsert
+        $user->create([
+            'name' => 'testname',
+            'email' => 'mail@test.com',
+            'password' => 'testpassword',
+            //dd($user)
+        ]);
+       
+        //var_dump($user);
         //打刻ページにアクセスできるのは社員のみ
-        $user = Stamp::id()->user_id;
+        $user = User::user()->user_id;
+        //$stamp = new Stamp();
+        Stamp::create([
+            'user_id' => 1,
+            'start_work' => Carbon::now(),
+            'stamp_date' => Carbon::today()
+        ]);
+        return redirect('/');
         //出勤開始打刻は１日１回まで
-        $oldTimestmp = Stamp::where('user_id', $user->id)->latest()->first();
-        if ($oldTimestmp) {
-            $oldTimestampStart = new Carbon($oldTimestmp->start_work);
-        }
+        //= Stamp::where('user_id', $user->id)->latest()->first();
+        //if ($oldTimestmp) {
+        //$oldTimestamp = new Carbon($oldTimestmp->start_work);
 
-       // $date = Carbon::now(); // 現在時刻
-        
-        // $time = date ("Y-m-d h:i:s");
-        // インスタンス生成
-        //$datetime = new Carbon();
+        //}
+
+        //日時を取得
+        $date = Carbon::now(); // 現在時刻
+        $date->format('Y/m/d');
+        $date ("Y-m-d h:i:s");
+        //var_dump($date);
+
+        //userテーブルにセーブ
+        //$user->save();
         return view('auth.attendance');
         
     }

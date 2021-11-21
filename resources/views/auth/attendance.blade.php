@@ -61,14 +61,18 @@
 </header>
 <div class="main">
   <div class="main-item">
-    
+
     <!----------勤務開始------------>
     <div class="main-item_tag">
-      <form action="/" method="POST">
-        <input type="submit" name="start" value="勤務開始">
-        <input type='hidden' id="user_id" name="start" value="">
+      <form action="/start" method="POST">
+        <input type="submit" name="start_work" value="勤務開始">
+        <input type='hidden' id="user_id" name="start_work" value="">
     </div>
     </form>
+
+
+
+
     <!----------勤務終了------------>
     <p class="main-item_tag">勤務終了</p>
   </div>

@@ -17,7 +17,7 @@ class CreateBreaksTable extends Migration
             
             $table->time('start_break');
             $table->time('end_break');
-            $table->integer('stamp_id');
+            $table->unsignedBigInteger('stamp_id');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });

@@ -16,7 +16,7 @@ use Illuminate\Http\Response;
 */
 
 //打刻ページ
-//Route::get('/', [AttendanceController::class, 'index']);
+Route::get('/', [AttendanceController::class, 'index']);
 //打刻をするページ
 Route::get('/', [AttendanceController::class, 'start']);
 //Route::post('/', [AttendanceController::class, 'start']);

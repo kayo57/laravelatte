@@ -14,8 +14,8 @@ class CreateStampsTable extends Migration
     public function up()
     {
         Schema::create('stamps', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id');
+            $table->unsignedBigInteger('id', true);
+            $table->unsignedBigInteger('user_id');
             $table->time('start_work');
             $table->time('end_work');
             $table->date('stamp_date');
