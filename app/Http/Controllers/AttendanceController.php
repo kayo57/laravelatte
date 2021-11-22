@@ -5,8 +5,8 @@ use App\Models\Stamp;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-//use log;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+//use Illuminate\Support\Facades\DB;
 //use Illuminate\Support\Facades\Auth;
 
 //use validator;
@@ -19,48 +19,56 @@ class AttendanceController extends Controller
     {
         return view('auth.attendance');
     }
+    
+    
     //打刻ページ（勤務開始）
     public function start()
     {
-        // Userのmodelクラスのインスタンスを生成
+        //Userのmodelクラスのインスタンスを生成
         $user = new User();
         // データベースに値をinsert
         $user->create([
-            'name' => 'testname',
-            'email' => 'mail@test.com',
-            'password' => 'testpassword',
-            //dd($user)
-        ]);
-       
-        //var_dump($user);
+        'name' => 'testname',
+        'email' => 'mail@test.com',
+        'password' => 'testpassword',
+         ]);
+        
+
         //打刻ページにアクセスできるのは社員のみ
         $user = User::user()->user_id;
-        //$stamp = new Stamp();
+        $stamp = new Stamp();
+
+        
+        //$date = Carbon::now();//日時を取得
+        //Log::info("========================");
+        //Log::info($date->year);
+        //Log::info("========================");
+        
         Stamp::create([
             'user_id' => 1,
             'start_work' => Carbon::now(),
-            'stamp_date' => Carbon::today()
+            'end_work' => 0,
+            'stamp_date' => Carbon::today(),
         ]);
-        return redirect('/');
+        
+        return view('auth.attendance');
+        //return view('/');
+        //return redirect('/');
         //出勤開始打刻は１日１回まで
         //= Stamp::where('user_id', $user->id)->latest()->first();
         //if ($oldTimestmp) {
         //$oldTimestamp = new Carbon($oldTimestmp->start_work);
-
         //}
 
         //日時を取得
-        $date = Carbon::now(); // 現在時刻
-        $date->format('Y/m/d');
-        $date ("Y-m-d h:i:s");
-        //var_dump($date);
-
-        //userテーブルにセーブ
-        //$user->save();
-        return view('auth.attendance');
+        //$date = Carbon::now(); // 現在時刻
+        //$date->format('Y/m/d');
+        //$date ("Y-m-d h:i:s");
+        
+        //return view('auth.attendance');
         
     }
-    //打刻
+    
     //会員登録ページ
     //public function store(Request $request)
     //{

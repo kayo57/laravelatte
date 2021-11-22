@@ -18,7 +18,7 @@ use Illuminate\Http\Response;
 //打刻ページ
 Route::get('/', [AttendanceController::class, 'index']);
 //打刻をするページ
-Route::get('/', [AttendanceController::class, 'start']);
+Route::get('/start', [AttendanceController::class, 'start']);
 //Route::post('/', [AttendanceController::class, 'start']);
 //会員登録ページ
 //Route::get('/register', [AttendanceController::class, 'table']);

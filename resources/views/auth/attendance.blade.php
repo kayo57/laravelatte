@@ -66,7 +66,7 @@
     <div class="main-item_tag">
       <form action="/start" method="POST">
         <input type="submit" name="start_work" value="勤務開始">
-        <input type='hidden' id="user_id" name="start_work" value="">
+        <input type='hidden' id="user_id" name="start_work" value="{{}}">
     </div>
     </form>
 
