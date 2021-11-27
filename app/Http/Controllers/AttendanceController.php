@@ -102,10 +102,8 @@ class AttendanceController extends Controller
     }
 
     //ログインページ
-    public function login(Request $request)
+    public function login()
     {
-        
-        //log::info('auth.login');
         return view('auth.login');
        
     }

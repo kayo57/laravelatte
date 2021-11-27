@@ -30,6 +30,7 @@
   <div>
     <!-----日付別勤怠ページ・.views/auth/?blade.php----->
   </div>
+  <div>yield('dashboard')</div>
 
 </body>
 
