@@ -1,55 +1,61 @@
-<!-----会員登録ページ------>
-@extends('Layouts.app')
+<!------------ユーザー登録ページ-----2--------->
+@extends('Layouts.base')
 @section('register')
-<div class="register">
-  <header class="header">
-    <div class="header-ttl">
-      <h1>Atte</h1>
-  </header>
-  <style>
-    
-  </style>
+<x-guest-layout>
+  <x-auth-card>
+    <x-slot name="logo">
+      <a href="/">
+        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+      </a>
+    </x-slot>
 
-  <div class="main">
-    <p class="main-title">会員登録</p>
-  </div>
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
+    <!--<form method="POST" action="{{ route('register') }}">--->
+    <form method="get" action="/register">
+      @csrf
 
-
-  <div class="form-group">
-    <form action="/" method="post">
-
+      <!-- Name -->
       <div>
-        <input type="txet" class="input-name" name="name" placeholder="名前" value="">
-      </div>
-      @if ($errors->has('name'))
-      <tr>
-        <th>ERROR</th>
-        <td>
-          {{$errors->first('name')}}
-        </td>
-      </tr>
-      @endif
+        <x-label for="name" :value="__('Name')" />
 
-      <div>
-        <input type=" txet" class="input-email" name="email" placeholder="メールアドレス" value="">
+        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
       </div>
 
-      <div>
-        <input type=" txet" class="input-password" name="password" placeholder="パスワード" value="">
+      <!-- Email Address -->
+      <div class="mt-4">
+        <x-label for="email" :value="__('Email')" />
+
+        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
       </div>
 
-      <div>
-        <input type="txet" class="input-password" name="password" placeholder="確認用パスワード" value="">
-      </div>
-      <input type="submit" class="button" value="会員登録">
-      <p class="">アカウントをお持ちの方はこちらから</p>
-      <a href="" class="login">ログイン</a>
+      <!-- Password -->
+      <div class="mt-4">
+        <x-label for="password" :value="__('Password')" />
 
+        <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mt-4">
+        <x-label for="password_confirmation" :value="__('Confirm Password')" />
+
+        <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required />
+      </div>
+
+      <div class="flex items-center justify-end mt-4">
+        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+          {{ __('Already registered?') }}
+        </a>
+
+        <x-button class="ml-4">
+          {{ __('Register') }}
+        </x-button>
+      </div>
     </form>
-  </div>
-
-</div>
-<!-----end.register---->
-
+  </x-auth-card>
+</x-guest-layout>
 @endsection
+
+<!------------ユーザー登録ページ-------------->

@@ -1,4 +1,4 @@
-<!---------打刻ページ/パーツ----------->
+<!---------打刻ページ/パーツ----1------->
 
 <style>
   .header {
@@ -44,7 +44,7 @@
 
   }
 </style>
-@extends('Layouts.app')
+@extends('Layouts.base')<!--views/layouts/baseベース--->
 <!----打刻ページ----->
 @section('content')
 <header class="header">
@@ -64,9 +64,10 @@
 
     <!----------勤務開始------------>
     <div class="main-item_tag">
-      <form action="/start" method="POST">
+      <form action="/" method="POST">
+        @csrf
         <input type="submit" name="start_work" value="勤務開始">
-        <input type='hidden' id="user_id" name="start_work" value="{{}}">
+        <input type='hidden' id="user_id" name="start_work" value="">
     </div>
     </form>
 
@@ -84,3 +85,6 @@
   </div>
   @endsection
   <!----end.打刻ページ----->
+
+
+  <!--------------打刻ページ/パーツ----------->

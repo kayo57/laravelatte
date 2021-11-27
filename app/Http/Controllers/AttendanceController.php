@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 //use Illuminate\Support\Facades\DB;
-//use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth;
 
 //use validator;
 //use Illuminate\Support\Facades\Validator;
@@ -17,6 +17,7 @@ class AttendanceController extends Controller
     //打刻一覧表示ページ
     public function index(Request $request)
     {
+        
         return view('auth.attendance');
     }
     
@@ -32,17 +33,18 @@ class AttendanceController extends Controller
         'email' => 'mail@test.com',
         'password' => 'testpassword',
          ]);
-        
 
         //打刻ページにアクセスできるのは社員のみ
+
         $user = User::user()->user_id;
         $stamp = new Stamp();
 
-        
+
         //$date = Carbon::now();//日時を取得
         //Log::info("========================");
         //Log::info($date->year);
         //Log::info("========================");
+        //Log::info(Carbon::now());
         
         Stamp::create([
             'user_id' => 1,
@@ -68,28 +70,46 @@ class AttendanceController extends Controller
         //return view('auth.attendance');
         
     }
-    
+
     //会員登録ページ
     //public function store(Request $request)
     //{
-        //バリテーション
-        //validator = Validator::make($request->all(),[
-            //$validate_rule = [
-            //'name' => 'required|max:255',
-            //'email' => 'required|max:255',
-            //'password' =>'required|min:8|max:255'
-        //];
-        //バリテーションエラー
-        //$this->validate($request, $validate_rule);
-        //$form = $request->all();
-        //if ($validator->fails()) {
-            //return redirect('/')
-            //->withInput()
-           //->withErrors($validator);
-        //}
-        //return view('app.register');
-        //return view('register');
+    //バリテーション
+    //validator = Validator::make($request->all(),[
+    //$validate_rule = [
+    //'name' => 'required|max:255',
+    //'email' => 'required|max:255',
+    //'password' =>'required|min:8|max:255'
+    //];
+    //バリテーションエラー
+    //$this->validate($request, $validate_rule);
+    //$form = $request->all();
+    //if ($validator->fails()) {
+    //return redirect('/')
+    //->withInput()
+    //->withErrors($validator);
     //}
+    //return view('app.register');
+    //return view('register');
+    //}
+
+    //登録ページ
+    public function register()
+    {
+        
+        //log::info('auth.register');
+        return view('auth.register');
+    }
+
+    //ログインページ
+    public function login(Request $request)
+    {
+        
+        //log::info('auth.login');
+        return view('auth.login');
+       
+    }
+    
 }
 
 
