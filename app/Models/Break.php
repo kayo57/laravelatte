@@ -15,7 +15,8 @@ class attendance extends Model
     'end_break',
     'stamp_id'
   ];
-  public static $rules = array(
-    
-  );
+  public function stamp()
+  {
+    return $this->belongsTo(Stamp::class);
+  }
 }

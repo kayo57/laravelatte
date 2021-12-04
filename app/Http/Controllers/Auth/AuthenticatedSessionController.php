@@ -32,8 +32,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended('auth.attendance');
-        //RouteServiceProvider::HOME
+        //打刻ページ移行する
+        //return redirect()->intended('auth.attendance');
+        return view('auth.attendance');
         //セッションの 'url.intended' に値が設定されていたらそこにリダイレクトする。値が設定されていなかったら '/' にリダイレクトする
     }
 
@@ -51,6 +52,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }

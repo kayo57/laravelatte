@@ -15,12 +15,10 @@ use Illuminate\Http\Response;
 |
 */
 
+//ホーム
 Route::get('/', function () {
     return view('welcome');
 });
-
-
-
 //ユーザー登録が完了するまたはログインが完了する
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -32,17 +30,20 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 //打刻ページ
-Route::get('/', [AttendanceController::class, 'index']);
-//打刻をするページ
-//Route::get('/start', [AttendanceController::class, 'start']);
-Route::post('/', [AttendanceController::class, 'start']);
+Route::get('/index', [AttendanceController::class, 'index']);
+//勤務開始打刻
+Route::get('/start', [AttendanceController::class, 'start']);
 
-//会員登録ページ
-Route::post('/register', [AttendanceController::class, 'register'])->name('register');
-//Route::post('/register', [AttendanceController::class, 'table']);
-//ログインページ
-Route::get('/login', [AttendanceController::class, 'login'])->name('login');
-Route::post('/login', [AttendanceController::class, 'login']);
+//勤務開始を送信
+Route::post('/start', [AttendanceController::class, 'start']);
+
+//勤務終了を送信
+Route::post('/end', [AttendanceController::class, 'end']);
+
+//休憩開始
+Route::post('/rest', [AttendanceController::class, 'rest']);
+
+
 
 //日付別勤怠ページ
 //Route::get('/', [AttendanceController::class, 'date']);

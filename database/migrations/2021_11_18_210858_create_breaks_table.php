@@ -14,7 +14,7 @@ class CreateBreaksTable extends Migration
     public function up()
     {
         Schema::create('breaks', function (Blueprint $table) {
-            
+            $table->unsignedBigInteger('id', true);
             $table->time('start_break');
             $table->time('end_break');
             $table->unsignedBigInteger('stamp_id');

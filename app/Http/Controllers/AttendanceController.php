@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 use App\Models\Stamp;
 use App\Models\User;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 //use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\Break_;
 
 //use validator;
 //use Illuminate\Support\Facades\Validator;
@@ -17,86 +19,94 @@ class AttendanceController extends Controller
     //打刻一覧表示ページ
     public function index(Request $request)
     {
+        $name = $request->name;
+        
+        if (Auth::attempt(['name' => $name])){
+            $name = User::user()->name;
+            
+        }
+        //return view('auth.attendance',['name' => $name, 'text' => $text]);
         
         return view('auth.attendance');
     }
-    
-    
+
     //打刻ページ（勤務開始）
     public function start()
     {
-        //Userのmodelクラスのインスタンスを生成
+        
+        // Userのmodelクラスのインスタンスを生成
         $user = new User();
         // データベースに値をinsert
-        $user->create([
+        /**$user->create([
         'name' => 'testname',
         'email' => 'mail@test.com',
         'password' => 'testpassword',
-         ]);
+         ]);**/
 
         //打刻ページにアクセスできるのは社員のみ
 
-        $user = User::user()->user_id;
-        $stamp = new Stamp();
+        //user()メソッドは、認証を行ったユーザー情報を取得するためのメソッド
+        $user = Auth::user();
 
+        /**
+         * 打刻は1日一回までにしたい
+         * DB
+         */
+        $oldTimestamp = Stamp::where('user_id', $user->id)->latest()->first();
+        if ($oldTimestamp) {
+            $oldTimestampStart = new Carbon($oldTimestamp->start_work);
+            $oldTimestampDay = $oldTimestampStart->startOfDay();
+        } 
 
-        //$date = Carbon::now();//日時を取得
-        //Log::info("========================");
-        //Log::info($date->year);
-        //Log::info("========================");
-        //Log::info(Carbon::now());
-        
-        Stamp::create([
-            'user_id' => 1,
-            'start_work' => Carbon::now(),
-            'end_work' => 0,
-            'stamp_date' => Carbon::today(),
-        ]);
-        
-        return view('auth.attendance');
-        //return view('/');
-        //return redirect('/');
-        //出勤開始打刻は１日１回まで
-        //= Stamp::where('user_id', $user->id)->latest()->first();
-        //if ($oldTimestmp) {
-        //$oldTimestamp = new Carbon($oldTimestmp->start_work);
-        //}
+            $timestamp = Stamp::create([
+                'user_id' => $user->id,
+                'start_work' => Carbon::now(), //現在時刻
+                'end_work' => 0,
+                'stamp_date' => Carbon::today(), //今日の日付
+            ]);
+        //dd($timestamp);
 
-        //日時を取得
-        //$date = Carbon::now(); // 現在時刻
-        //$date->format('Y/m/d');
-        //$date ("Y-m-d h:i:s");
-        
         //return view('auth.attendance');
+        //return redirect('/start');
+        //return view('auth. attendance');
+        //return view('/');
+        return redirect()->back()->with(['start_in' ,'出勤打刻が完了しました']);
         
     }
 
-    //会員登録ページ
-    //public function store(Request $request)
-    //{
-    //バリテーション
-    //validator = Validator::make($request->all(),[
-    //$validate_rule = [
-    //'name' => 'required|max:255',
-    //'email' => 'required|max:255',
-    //'password' =>'required|min:8|max:255'
-    //];
-    //バリテーションエラー
-    //$this->validate($request, $validate_rule);
-    //$form = $request->all();
-    //if ($validator->fails()) {
-    //return redirect('/')
-    //->withInput()
-    //->withErrors($validator);
-    //}
-    //return view('app.register');
-    //return view('register');
-    //}
+    public function end()
+    {
+        $user = Auth::user();
+        $endtimestamp = Stamp::where('user_id', $user->id)->latest()->first();
+        //return redirect()->back()->with('end_in', '出勤打刻が完了しました');
+
+        $endtimestamp->update([
+            'end_work' => Carbon::now()
+        ]);
+        //dd($endtimestamp);
+        return redirect()->back()->with('end_in', '退勤打刻が完了しました');
+    }
+
+    public function rest()
+    {
+
+        $rest = Auth::rest();
+        $startrest = Attendance::where('stamp_id', $rest->id)->latest()->first();
+
+        $startrest = Attendance::create([
+            'stamp_id' => $rest->id,
+            'start_break' => Carbon::now(),
+        ]);
+
+
+        return view('auth. attendance');
+
+    }
+
 
     //登録ページ
     public function register()
     {
-        
         //log::info('auth.register');
         return view('auth.register');
     }
@@ -105,9 +115,7 @@ class AttendanceController extends Controller
     public function login()
     {
         return view('auth.login');
-       
     }
-    
 }
 
 

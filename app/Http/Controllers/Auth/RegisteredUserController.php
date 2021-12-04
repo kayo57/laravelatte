@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,8 +40,8 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        //ユーザー登録とログイン
-        
+       
+         //ユーザー登録とログイン
         Auth::login($user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -53,7 +52,12 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        //log::info('auth.login'::HOME);
-        return redirect('auth.login'::HOME);
+        //log::info('auth.attendance');
+        return redirect('auth.login');
+         
+        //log::info('/register');
+        //return view('/login');
+        //return view('auth.attendance');
+        //return view('/register');
     }
 }
