@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 use App\Models\Stamp;
 use App\Models\User;
-use App\Models\Attendance;
+use App\Models\Rest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 //use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use PhpParser\Node\Stmt\Break_;
+
 
 //use validator;
 //use Illuminate\Support\Facades\Validator;
@@ -74,6 +74,7 @@ class AttendanceController extends Controller
         
     }
 
+    //勤務終了
     public function end()
     {
         $user = Auth::user();
@@ -91,15 +92,17 @@ class AttendanceController extends Controller
     {
 
         $rest = Auth::rest();
-        $startrest = Attendance::where('stamp_id', $rest->id)->latest()->first();
+        $startRest = Rest::where('stamp_id', $rest->id)->latest()->first();
+        
 
-        $startrest = Attendance::create([
+        $startRest = Rest::create([
             'stamp_id' => $rest->id,
-            'start_break' => Carbon::now(),
+            'start_rest' => Carbon::now(),
         ]);
 
 
-        return view('auth. attendance');
+        //return redirect()->back()->with(['rest_in', '休憩が完了しました']);
+        return view('auth'.'attendance');
 
     }
 

@@ -104,7 +104,7 @@
       <form action="/rest" method="POST">
         @csrf
         <button type="submit" class="btn btn-start">休憩開始</button>
-        <input type='hidden' id="user_id" name="start_break" value="{{'start_break'}}">
+        <input type='hidden' id="stamp_id" name="start_rest" value="{{'start_rest'}}">
     </div>
     </form>
 
@@ -112,10 +112,10 @@
 
     <!----------休憩終了------------>
     <div class="main-item_second">
-      <form action="/break" method="POST">
+      <form action="/rest" method="POST">
         @csrf
         <button type="submit" class="btn btn-end">休憩開始</button>
-        <input type='hidden' id="user_id" name="end_break" value="{{'end_break'}}">
+        <input type='hidden' id="user_id" name="end_rest" value="{{'end_rest'}}">
     </div>
     </form>
   </div>

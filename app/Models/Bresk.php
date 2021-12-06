@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class attendance extends Model
+class rest extends Model
 {
   use HasFactory;
   protected $table = 'stamps';
   protected $fillable = [
     'stamp_date',
-    'start_break',
-    'end_break',
+    'start_rest',
+    'end_rest',
     'stamp_id'
   ];
   public function stamp()

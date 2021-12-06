@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBreaksTable extends Migration
+class CreateRestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateBreaksTable extends Migration
      */
     public function up()
     {
-        Schema::create('breaks', function (Blueprint $table) {
+        Schema::create('rests', function (Blueprint $table) {
             $table->unsignedBigInteger('id', true);
-            $table->time('start_break');
-            $table->time('end_break');
+            $table->time('start_rest');
+            $table->time('end_rest');
             $table->unsignedBigInteger('stamp_id');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
@@ -30,6 +30,6 @@ class CreateBreaksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('breaks');
+        Schema::dropIfExists('rests');
     }
 }

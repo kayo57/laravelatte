@@ -34,7 +34,8 @@ class AuthenticatedSessionController extends Controller
 
         //打刻ページ移行する
         //return redirect()->intended('auth.attendance');
-        return view('auth.attendance');
+        //return view('auth.attendance');
+        return redirect('index');
         //セッションの 'url.intended' に値が設定されていたらそこにリダイレクトする。値が設定されていなかったら '/' にリダイレクトする
     }
 
