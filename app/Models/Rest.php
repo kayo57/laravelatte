@@ -16,9 +16,9 @@ class Rest extends Model
         'stamp_id'
     ];
     
-    public function stamp()
+    /**public function stamp()
     {
         return $this->belongsTo(Stamp::class);
-    }
+    }**/
 }
 

@@ -88,21 +88,24 @@ class AttendanceController extends Controller
         return redirect()->back()->with('end_in', '退勤打刻が完了しました');
     }
 
+    //休憩開始
     public function rest()
     {
 
-        $rest = Auth::rest();
+        $rest = new Rest();
+        $rest = Auth::user();
         $startRest = Rest::where('stamp_id', $rest->id)->latest()->first();
         
 
         $startRest = Rest::create([
             'stamp_id' => $rest->id,
             'start_rest' => Carbon::now(),
+            'end_rest' => 0
         ]);
 
 
-        //return redirect()->back()->with(['rest_in', '休憩が完了しました']);
-        return view('auth'.'attendance');
+        return redirect()->back()->with(['rest_in', '休憩開始']);
+        //return view('auth'.'attendance');
 
     }
 
