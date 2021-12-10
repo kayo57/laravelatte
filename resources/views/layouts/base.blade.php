@@ -29,6 +29,7 @@
   </div>
   <div>
     <!-----日付別勤怠ページ・.views/auth/?blade.php----->
+    @yield('datepege')
   </div>
 
   <div>

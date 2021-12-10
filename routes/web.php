@@ -41,9 +41,10 @@ Route::post('/start', [AttendanceController::class, 'start']);
 Route::post('/end', [AttendanceController::class, 'end']);
 
 //休憩開始
-Route::post('/rest', [AttendanceController::class, 'rest']);
+Route::post('/reststart', [AttendanceController::class, 'reststart']);
 
-
+//休憩終了
+Route::post('/restend', [AttendanceController::class, 'restend']);
 
 //日付別勤怠ページ
-//Route::get('/', [AttendanceController::class, 'date']);
+Route::get('/date', [AttendanceController::class, 'date']);

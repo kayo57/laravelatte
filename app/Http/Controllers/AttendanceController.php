@@ -25,8 +25,6 @@ class AttendanceController extends Controller
             $name = User::user()->name;
             
         }
-        //return view('auth.attendance',['name' => $name, 'text' => $text]);
-        
         return view('auth.attendance');
     }
 
@@ -43,8 +41,8 @@ class AttendanceController extends Controller
         'password' => 'testpassword',
          ]);**/
 
-        //打刻ページにアクセスできるのは社員のみ
 
+         //打刻ページにアクセスできるのは社員のみ
         //user()メソッドは、認証を行ったユーザー情報を取得するためのメソッド
         $user = Auth::user();
 
@@ -64,7 +62,6 @@ class AttendanceController extends Controller
                 'end_work' => 0,
                 'stamp_date' => Carbon::today(), //今日の日付
             ]);
-        //dd($timestamp);
 
         //return view('auth.attendance');
         //return redirect('/start');
@@ -79,17 +76,16 @@ class AttendanceController extends Controller
     {
         $user = Auth::user();
         $endtimestamp = Stamp::where('user_id', $user->id)->latest()->first();
-        //return redirect()->back()->with('end_in', '出勤打刻が完了しました');
 
         $endtimestamp->update([
             'end_work' => Carbon::now()
         ]);
-        //dd($endtimestamp);
+
         return redirect()->back()->with('end_in', '退勤打刻が完了しました');
     }
 
     //休憩開始
-    public function rest()
+    public function reststart()
     {
 
         $rest = new Rest();
@@ -102,18 +98,41 @@ class AttendanceController extends Controller
             'start_rest' => Carbon::now(),
             'end_rest' => 0
         ]);
-
-
         return redirect()->back()->with(['rest_in', '休憩開始']);
-        //return view('auth'.'attendance');
+    }
 
+    //休憩終了
+    public function restend()
+    {
+        $rest = Auth::user();
+        $endtRest = Rest::where('stamp_id', $rest->id)->latest()->first();
+        $endRest = Rest::create([
+            'stamp_id' => $rest->id,
+            'end_rest' => Carbon::now(),
+            'start_rest' => 0
+        ]);
+        dd($rest);
+        return redirect()->back()->with(['rest_end', '休憩終了']);
+    }
+
+    //日付別勤怠情報取得ページ
+    public function date()
+    {
+        
+        $users = User::all();
+        //$users = Stamp::all();
+        //$users = Rest::all();
+        //$hasitmems = User::has('stamp')->get();
+        $query = User::query();
+        //全件習得+ページネーション
+        $users = $query->orderBy('id','desc')->paginate(5);
+        return view('auth.datepege')->with('users',$users);
     }
 
 
     //登録ページ
     public function register()
     {
-        //log::info('auth.register');
         return view('auth.register');
     }
 

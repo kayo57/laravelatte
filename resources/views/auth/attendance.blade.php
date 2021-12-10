@@ -29,11 +29,15 @@
     font-size: 20px;
   }
 
-  .main-item {
+  .user-name {
+   text-align: center;
+   font-size: 30px;
+   padding-top: 20px;
+
+  } .main-item {
     display: flex;
     justify-content: center;
   }
-
   .main-item_second {
     display: flex;
     justify-content: center;
@@ -59,14 +63,14 @@
   </div>
   <nav class="header-nav">
     <ul class="header-nav_list">
-      <li class="header-nav_item"><a herf="/">ホーム</li>
-      <li class="header-nav_item"><a herf="">日付一覧</li>
-      <li class="header-nav_item"><a herf="">ログアウト</li>
+      <li class="header-nav_item"><a herf="/">ホーム</a></li>
+      <li class="header-nav_item"><a herf="/date">日付一覧</a></li>
+      <li class="header-nav_item"><a herf="/logout">ログアウト</a></li>
     </ul>
   </nav>
 </header>
 <div class="main">
-  <p class="">{{ Auth::user()->name}}さんお疲れ様です！</p>
+  <p class="user-name">{{ Auth::user()->name}}さんお疲れ様です！</p>
 
 
   <div class="main-item">
@@ -82,7 +86,7 @@
       {{session('start_in')}}
     </div>
     @endif
-</form>
+    </form>
 
 
     <!----------勤務終了------------>
@@ -101,7 +105,7 @@
   <div class="main-item">
     <!----------休憩開始------------>
     <div class="main-item_second">
-      <form action="/rest" method="POST">
+      <form action="/reststart" method="POST">
         @csrf
         <button type="submit" class="btn btn-start">休憩開始</button>
         <input type='hidden' id="stamp_id" name="start_rest" value="{{'start_rest'}}">
@@ -112,10 +116,10 @@
 
     <!----------休憩終了------------>
     <div class="main-item_second">
-      <form action="/rest" method="POST">
+      <form action="/restend" method="POST">
         @csrf
-        <button type="submit" class="btn btn-end">休憩開始</button>
-        <input type='hidden' id="user_id" name="end_rest" value="{{'end_rest'}}">
+        <button type="submit" class="btn btn-end">休憩終了</button>
+        <input type='hidden' id="stamp_id" name="end_rest" value="{{'end_rest'}}">
     </div>
     </form>
   </div>

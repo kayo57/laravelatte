@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rest extends Model
 {
     use HasFactory;
-    protected $table = 'stamps';
+    protected $table = 'rests';
     protected $fillable = [
         'stamp_date',
         'start_rest',
