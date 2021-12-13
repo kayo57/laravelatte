@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 //use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 
 //use validator;
@@ -111,21 +112,26 @@ class AttendanceController extends Controller
             'end_rest' => Carbon::now(),
             'start_rest' => 0
         ]);
-        dd($rest);
         return redirect()->back()->with(['rest_end', '休憩終了']);
     }
 
     //日付別勤怠情報取得ページ
     public function date()
     {
-        
-        $users = User::all();
-        //$users = Stamp::all();
-        //$users = Rest::all();
-        //$hasitmems = User::has('stamp')->get();
-        $query = User::query();
+        //$user = Auth::user();
+        //$stamps = Stamp::where('user_id',$user->id)->get();
+        //日付
+        $date = date('Y-m-d');
+        //$users = Stamp::select('stamp_date')->get();
+        //$users = Stamp::select('user_id','stamp_date')->latest()->first();
+        //$users = Stamp::where('stamp_date')->get();
+        //Stamp::where('stamp_date',$date)->get();
+        $users = Stamp::select('stamp_date')->join('users', 'users.id', 'user_id','users.name');
+        $users = Stamp::select('stamp_date','start_work','end_work',)->get();
+
+        //$query = Stamp::query();
         //全件習得+ページネーション
-        $users = $query->orderBy('id','desc')->paginate(5);
+        //$users = $query->orderBy('id','desc')->paginate(5);
         return view('auth.datepege')->with('users',$users);
     }
 

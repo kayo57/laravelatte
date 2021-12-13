@@ -19,6 +19,11 @@
 
 <form action="/date" method="POST">
   @csrf
+  <div class="date">
+    <p>日付</p>
+    <div>{{date('Y-m-d')}}</div>
+  </div>
+
 
   <div class="">
     <tr>
@@ -37,7 +42,8 @@
       <td>{{$user->end_work}}</td>
       <td>{{$user->start_rest}}</td>
       <td>{{$user->end_rest}}</td>
+
+      <td>{{$user->stamp_date}}</td>
     </tr>
     @endforeach
   </tbody>
-  {{$users->links()}}
