@@ -6,10 +6,10 @@ use App\Models\User;
 use App\Models\Rest;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
-//use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 //use validator;
@@ -118,21 +118,40 @@ class AttendanceController extends Controller
     //日付別勤怠情報取得ページ
     public function date()
     {
-        //$user = Auth::user();
+        $user = Auth::user();
+       
         //$stamps = Stamp::where('user_id',$user->id)->get();
+        //$users = Stamp::select('stamp_date')->get();
         //日付
         $date = date('Y-m-d');
+         //Stamp::where('stamp_date')->get();
+
+        //$stamp_date = Stamp::leftjoin('users', 'stamps.user_id','stamps.stamp_date', '=', 'users.id');
+        //return view('auth.datepege')->with('stamp_date', $stamp_date);
+
         //$users = Stamp::select('stamp_date')->get();
         //$users = Stamp::select('user_id','stamp_date')->latest()->first();
         //$users = Stamp::where('stamp_date')->get();
         //Stamp::where('stamp_date',$date)->get();
-        $users = Stamp::select('stamp_date')->join('users', 'users.id', 'user_id','users.name');
-        $users = Stamp::select('stamp_date','start_work','end_work',)->get();
+        //$date = Stamp::select('stamp_date')->join('users', 'users.id', 'user_id');
+        //$users = Stamp::select('stamp_date')->get();
+        //$users = Stamp::select('stamp_date','start_work','end_work')->get();
+        //$users = Stamp::join('users', 'users.id', 'user_id');
+        //$users = Stamp::join('users', 'stamp.users.id', '=', 'users.id')->where('stamp.date', $stamp_date)->get();
+        //$users = Stamp::all();
+
+        //stampモデルにuserモデルを結合
+        $users = Stamp::leftJoin('users', 'stamps.user_id', '=', 'users.id')
+        ->get();
+
 
         //$query = Stamp::query();
         //全件習得+ページネーション
         //$users = $query->orderBy('id','desc')->paginate(5);
-        return view('auth.datepege')->with('users',$users);
+        //return view('auth.datepege')->with('users', $users);
+        //$items = $query->orderBy('id','desc')->paginate(5);
+        $items = Stamp::simplePaginate(5);
+        return view('auth.datepege',compact('users', 'date','items'));
     }
 
 
