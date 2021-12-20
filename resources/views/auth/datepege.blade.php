@@ -40,9 +40,9 @@
   </div>
   <nav class="header-nav">
     <ul class="header-nav_list">
-      <li class="header-nav_item"><a herf="/">ホーム</li>
-      <li class="header-nav_item"><a herf="">日付一覧</li>
-      <li class="header-nav_item"><a herf="">ログアウト</li>
+      <li><a href="/logout">ホーム</a></li>
+      <li><a href="/date">日付一覧</a></li>
+      <li><a href="/logout">ログアウト</a></li>
     </ul>
   </nav>
 </header>
@@ -52,9 +52,11 @@
   <div class="date">
     <p>日付</p>
     <div>{{date('Y-m-d')}}</div>
+    <label for="date" class="mr-2 ">日付を選択して下さい</label>
+    <input type="date" name="date" value="date" id="date">
   </div>
 
-  <div>{{$date}}の勤務一覧</div>
+  <div>{{$stamp_date}}の勤務一覧</div>
 
 
 
@@ -78,7 +80,7 @@
       <td>{{$user->stamp_date}}</td>
     </tr>
     @endforeach
-    
+
     {{ $items->links() }}
-    
+
   </tbody>

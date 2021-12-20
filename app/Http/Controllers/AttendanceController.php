@@ -123,7 +123,8 @@ class AttendanceController extends Controller
         //$stamps = Stamp::where('user_id',$user->id)->get();
         //$users = Stamp::select('stamp_date')->get();
         //日付
-        $date = date('Y-m-d');
+        //$date = date('Y-m-d');
+        $stamp_date = date('Y-m-d');
          //Stamp::where('stamp_date')->get();
 
         //$stamp_date = Stamp::leftjoin('users', 'stamps.user_id','stamps.stamp_date', '=', 'users.id');
@@ -140,18 +141,28 @@ class AttendanceController extends Controller
         //$users = Stamp::join('users', 'stamp.users.id', '=', 'users.id')->where('stamp.date', $stamp_date)->get();
         //$users = Stamp::all();
 
+        //$stamp_date = Stamp::where('date','stamp_date')->get();
+
         //stampモデルにuserモデルを結合
-        $users = Stamp::leftJoin('users', 'stamps.user_id', '=', 'users.id')
-        ->get();
+        //$users = Stamp::Join('users', 'stamps.user_id', '=', 'users.id')
+        //->where('stamps.stamp_date',$stamp_date)
+        //->get();
+        //$users = Stamp::leftJoin('users', 'stamps.user_id', '=', 'users.id')
+        //->get();
+
+        $users = User::where('user_id', Auth::user()->id)
+        ->orderBy('created_at','asc')
+        ->paginate(5);
 
 
         //$query = Stamp::query();
         //全件習得+ページネーション
-        //$users = $query->orderBy('id','desc')->paginate(5);
+        //$users = $users->orderBy('id','desc')->paginate(5);
         //return view('auth.datepege')->with('users', $users);
         //$items = $query->orderBy('id','desc')->paginate(5);
-        $items = Stamp::simplePaginate(5);
-        return view('auth.datepege',compact('users', 'date','items'));
+        $items = Stamp::Paginate(5);
+        //return view('auth.datepege',compact('users', 'date','items'));
+        return view('auth.datepege', compact('users', 'stamp_date', 'items'));
     }
 
 
