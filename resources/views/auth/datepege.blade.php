@@ -49,14 +49,31 @@
 
 <form action="/date" method="POST">
   @csrf
-  <div class="date">
-    <p>日付</p>
-    <div>{{date('Y-m-d')}}</div>
-    <label for="date" class="mr-2 ">日付を選択して下さい</label>
-    <input type="date" name="date" value="date" id="date">
+  @method('post')
+  <div>
+    <p class="user-name">{{ Auth::user()->name}}さんの日付別一覧ページ</p>
   </div>
+  <div class="date">
 
-  <div>{{$stamp_date}}の勤務一覧</div>
+
+    <div>本日の日付{{ date('Y-m-d')}}</div>
+
+
+    <label for="date" class="mr-2 ">
+      日付を選択して下さい
+    </label>
+    <input type="date" name="date" value="date" id="date">
+    <button type="submit" class="search" value="">検索</button>
+
+</form>
+</div>
+<div class="main">
+
+  <h3 class="">{{$date}}勤務一覧を表示</h3>
+
+
+
+
 
 
 
@@ -77,10 +94,10 @@
       <td class="text">{{$user->start_work}}</td>
       <td class="text">{{$user->end_work}}</td>
       <td></td>
-      <td>{{$user->stamp_date}}</td>
     </tr>
     @endforeach
 
     {{ $items->links() }}
+</div>
 
-  </tbody>
+</tbody>

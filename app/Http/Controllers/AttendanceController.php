@@ -116,53 +116,62 @@ class AttendanceController extends Controller
     }
 
     //日付別勤怠情報取得ページ
-    public function date()
+    public function date(Request $request)
     {
+        // 現在認証しているユーザーを取得
         $user = Auth::user();
-       
-        //$stamps = Stamp::where('user_id',$user->id)->get();
-        //$users = Stamp::select('stamp_date')->get();
         //日付
-        //$date = date('Y-m-d');
-        $stamp_date = date('Y-m-d');
-         //Stamp::where('stamp_date')->get();
+        $date = date('Y-m-d');
+        // $stamp_date = date('Y-m-d');
 
-        //$stamp_date = Stamp::leftjoin('users', 'stamps.user_id','stamps.stamp_date', '=', 'users.id');
-        //return view('auth.datepege')->with('stamp_date', $stamp_date);
+        $stamp_date = Stamp::select('stamp_date')->get();
+        if (!$stamp_date) {
+            return redirect('/datepege')->back()->with('message', '勤怠履歴がありません');
+        }
 
-        //$users = Stamp::select('stamp_date')->get();
-        //$users = Stamp::select('user_id','stamp_date')->latest()->first();
-        //$users = Stamp::where('stamp_date')->get();
-        //Stamp::where('stamp_date',$date)->get();
-        //$date = Stamp::select('stamp_date')->join('users', 'users.id', 'user_id');
-        //$users = Stamp::select('stamp_date')->get();
-        //$users = Stamp::select('stamp_date','start_work','end_work')->get();
-        //$users = Stamp::join('users', 'users.id', 'user_id');
-        //$users = Stamp::join('users', 'stamp.users.id', '=', 'users.id')->where('stamp.date', $stamp_date)->get();
-        //$users = Stamp::all();
-
-        //$stamp_date = Stamp::where('date','stamp_date')->get();
-
+        /** 
+        //日付が選択されたら
+        if (!empty($request['from']) && !empty($request['date'])) {
+            //ハッシュタグの選択された20xx/xx/xx ~ 20xx/xx/xxのレポート情報を取得
+            $date = Stamp::getDate($request['from'], $request['date']);
+        } else {
+            //リクエストデータがなければそのままで表示
+            $date = Stamp::get();
+        }
+        **/
+        
+        
         //stampモデルにuserモデルを結合
-        //$users = Stamp::Join('users', 'stamps.user_id', '=', 'users.id')
-        //->where('stamps.stamp_date',$stamp_date)
+        //$変数 = モデル名::join('結合するテーブル名', '元のテーブルのキー', '=','結合するテーブルのキー')
+        //->where('参照するカラム名', $引数で渡された値)
         //->get();
+        //$stampdates = Stamp::select('stamp_date')->get();
+        
+        
+        $users = Stamp::Join('users', 'stamps.user_id', '=', 'users.id')
+        //->where('stamps.stamp_date',$stamp_date)
+            //->where('stamps.user_id', '=', $stamp_date)
+            ->where('stamp_date', $date)
+        ->get();
+         
+        
+        
         //$users = Stamp::leftJoin('users', 'stamps.user_id', '=', 'users.id')
         //->get();
 
-        $users = User::where('user_id', Auth::user()->id)
-        ->orderBy('created_at','asc')
-        ->paginate(5);
+        //$users = User::where('user_id', Auth::user()->id)
+        //->orderBy('created_at','asc')
+        //->paginate(5);
 
 
         //$query = Stamp::query();
-        //全件習得+ページネーション
-        //$users = $users->orderBy('id','desc')->paginate(5);
+        //ページネーション
+             //$items = $users->orderBy('id','desc')->paginate(5);
         //return view('auth.datepege')->with('users', $users);
         //$items = $query->orderBy('id','desc')->paginate(5);
         $items = Stamp::Paginate(5);
         //return view('auth.datepege',compact('users', 'date','items'));
-        return view('auth.datepege', compact('users', 'stamp_date', 'items'));
+        return view('auth.datepege', compact('users', 'date', 'items','stamp_date'));
     }
 
 

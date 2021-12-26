@@ -30,14 +30,17 @@
   }
 
   .user-name {
-   text-align: center;
-   font-size: 30px;
-   padding-top: 20px;
+    text-align: center;
+    font-size: 30px;
+    padding-top: 20px;
 
-  } .main-item {
+  }
+
+  .main-item {
     display: flex;
     justify-content: center;
   }
+
   .main-item_second {
     display: flex;
     justify-content: center;
@@ -63,9 +66,9 @@
   </div>
   <nav class="header-nav">
     <ul class="header-nav_list">
-      <li class="header-nav_item"><a herf="/">ホーム</a></li>
-      <li class="header-nav_item"><a herf="/date">日付一覧</a></li>
-      <li class="header-nav_item"><a herf="/logout">ログアウト</a></li>
+      <li><a href="/logout">ホーム</a></li>
+      <li><a href="/date">日付一覧</a></li>
+      <li><a href="/logout">ログアウト</a></li>
     </ul>
   </nav>
 </header>

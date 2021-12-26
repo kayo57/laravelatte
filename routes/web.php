@@ -48,3 +48,5 @@ Route::post('/restend', [AttendanceController::class, 'restend']);
 
 //日付別勤怠ページ
 Route::get('/date', [AttendanceController::class, 'date']);
+
+Route::post('/date', [AttendanceController::class, 'date'])->name('date');
