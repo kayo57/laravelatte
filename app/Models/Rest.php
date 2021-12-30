@@ -13,7 +13,8 @@ class Rest extends Model
         'stamp_date',
         'start_rest',
         'end_rest',
-        'stamp_id'
+        'stamp_id',
+        'rest_time'
     ];
     
     /**public function stamp()

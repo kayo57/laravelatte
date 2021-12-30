@@ -62,7 +62,7 @@
     <label for="date" class="mr-2 ">
       日付を選択して下さい
     </label>
-    <input type="date" name="date" value="date" id="date">
+    <input type="date" name="date" id="date">
     <button type="submit" class="search" value="">検索</button>
 
 </form>
@@ -93,9 +93,19 @@
       <td class="text">{{$user->user->name}}</td>
       <td class="text">{{$user->start_work}}</td>
       <td class="text">{{$user->end_work}}</td>
-      <td></td>
+      @if (!empty($user->stamp_id))
+      <td class="">{{$rest_time}}</td>
+      @else
+      <td class="table-item">休憩なし</td>
+      @endif
+
+
     </tr>
     @endforeach
+
+
+
+
 
     {{ $items->links() }}
 </div>

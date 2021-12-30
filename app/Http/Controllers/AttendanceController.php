@@ -9,7 +9,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 
 //use validator;
@@ -66,7 +65,6 @@ class AttendanceController extends Controller
 
         //return view('auth.attendance');
         //return redirect('/start');
-        //return view('auth. attendance');
         //return view('/');
         return redirect()->back()->with(['start_in' ,'出勤打刻が完了しました']);
         
@@ -89,16 +87,22 @@ class AttendanceController extends Controller
     public function reststart()
     {
 
-        $rest = new Rest();
+        //$rest = new Rest();
         $rest = Auth::user();
         $startRest = Rest::where('stamp_id', $rest->id)->latest()->first();
+
+        $end_rest = new carbon($startRest->end_rest);
+        $start_rest = new carbon($startRest->start_rest);
         
 
         $startRest = Rest::create([
             'stamp_id' => $rest->id,
             'start_rest' => Carbon::now(),
-            'end_rest' => 0
+            'end_rest' => $end_rest,
+            'rest_time' => $rest_time = (strtotime($end_rest) - strtotime($start_rest))
+           
         ]);
+        //dd($startRest);
         return redirect()->back()->with(['rest_in', '休憩開始']);
     }
 
@@ -107,11 +111,19 @@ class AttendanceController extends Controller
     {
         $rest = Auth::user();
         $endtRest = Rest::where('stamp_id', $rest->id)->latest()->first();
+
+        $end_rest = new carbon($endtRest->end_rest);
+        $start_rest = new carbon($endtRest->start_rest);
+
+        
         $endRest = Rest::create([
             'stamp_id' => $rest->id,
             'end_rest' => Carbon::now(),
-            'start_rest' => 0
+            'start_rest' => $start_rest,
+            'rest_time' => $rest_time = (strtotime($end_rest) - strtotime($start_rest))
+            
         ]);
+        //dd($endRest);
         return redirect()->back()->with(['rest_end', '休憩終了']);
     }
 
@@ -120,44 +132,35 @@ class AttendanceController extends Controller
     {
         // 現在認証しているユーザーを取得
         $user = Auth::user();
-        //日付
-        $date = date('Y-m-d');
-        // $stamp_date = date('Y-m-d');
+        $date = $request['date'];
 
+        
         $stamp_date = Stamp::select('stamp_date')->get();
-        if (!$stamp_date) {
-            return redirect('/datepege')->back()->with('message', '勤怠履歴がありません');
-        }
+    
 
-        /** 
-        //日付が選択されたら
-        if (!empty($request['from']) && !empty($request['date'])) {
-            //ハッシュタグの選択された20xx/xx/xx ~ 20xx/xx/xxのレポート情報を取得
-            $date = Stamp::getDate($request['from'], $request['date']);
-        } else {
-            //リクエストデータがなければそのままで表示
-            $date = Stamp::get();
-        }
-        **/
-        
-        
-        //stampモデルにuserモデルを結合
         //$変数 = モデル名::join('結合するテーブル名', '元のテーブルのキー', '=','結合するテーブルのキー')
         //->where('参照するカラム名', $引数で渡された値)
         //->get();
-        //$stampdates = Stamp::select('stamp_date')->get();
+
+        //休憩時間の合計
+        //$rests = Rest::select('stamp_id', DB::raw('SUM(rest_time) as sum_rest_time'))->groupBy('stamp_id');
+        $rests = Rest::select('stamp_id','rest_time' )->groupBy('stamp_id','rest_time');
+        //dd($rests);
+        $rest_time = $request['time'];
+        $rest_time = Rest::select('rest_time')->get();
+        //dd($rest_time);
         
-        
+        //3つのテーブルを結合（user.stamp.rest）
         $users = Stamp::Join('users', 'stamps.user_id', '=', 'users.id')
-        //->where('stamps.stamp_date',$stamp_date)
-            //->where('stamps.user_id', '=', $stamp_date)
-            ->where('stamp_date', $date)
-        ->get();
-         
-        
-        
-        //$users = Stamp::leftJoin('users', 'stamps.user_id', '=', 'users.id')
+            ->leftJoinsub($rests, 'rests', function ($join) {
+                $join->on('stamps.id', '=', 'rests.stamp_id');
+            })
+        ->where('stamp_date', $date)
+        ->orderBy('stamps.updated_at', 'asc')
+            ->paginate(5);
         //->get();
+
+        //dd($users);
 
         //$users = User::where('user_id', Auth::user()->id)
         //->orderBy('created_at','asc')
@@ -166,12 +169,12 @@ class AttendanceController extends Controller
 
         //$query = Stamp::query();
         //ページネーション
-             //$items = $users->orderBy('id','desc')->paginate(5);
-        //return view('auth.datepege')->with('users', $users);
+        //$items = $users->orderBy('id','desc')->paginate(5);
+        
         //$items = $query->orderBy('id','desc')->paginate(5);
         $items = Stamp::Paginate(5);
         //return view('auth.datepege',compact('users', 'date','items'));
-        return view('auth.datepege', compact('users', 'date', 'items','stamp_date'));
+        return view('auth.datepege', compact('users', 'date', 'items','stamp_date','rest_time'));
     }
 
 

@@ -17,6 +17,7 @@ class CreateRestsTable extends Migration
             $table->unsignedBigInteger('id', true);
             $table->time('start_rest');
             $table->time('end_rest');
+            
             $table->unsignedBigInteger('stamp_id');
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
