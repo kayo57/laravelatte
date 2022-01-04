@@ -1,113 +1,81 @@
 <!---------日付ページ一覧---------->
-<style>
-  .header {
-    background: #F0FFF0;
-  }
-
-  .header-ttl {
-    padding-left: 20px;
-  }
-
-  .header-nav {
-    display: block;
-  }
-
-  .header-nav_list {
-    display: flex;
-    justify-content: flex-end;
-    list-style: none;
-  }
-
-  .header-nav_item {
-    padding-right: 15px;
-  }
-
-  .text-ttl {
-    font-weight: bold;
-    text-align: center;
-    margin: 0 auto;
-  }
-
-  .text-name {}
-</style>
 
 @extends('Layouts.base')
 @section('datepege')
-<header class="header">
-  <div class="header-ttl">
-    <h1>Atte</h1>
-
-  </div>
-  <nav class="header-nav">
-    <ul class="header-nav_list">
-      <li><a href="/logout">ホーム</a></li>
-      <li><a href="/date">日付一覧</a></li>
-      <li><a href="/logout">ログアウト</a></li>
-    </ul>
+<header>
+  <h1>Atte</h1>
+  <nav class="header">
+    <li class="nav"><a href="/">ホーム</a></li>
+    <li class="nav"><a href="/date">日付別一覧ページ</a></li>
+    <li class="nav"><a href="/index">勤怠打刻ページ</a></li>
+    <li class="nav"><a href="/">ログアウト</a></li>
   </nav>
 </header>
 
-<form action="/date" method="POST">
-  @csrf
-  @method('post')
-  <div>
-    <p class="user-name">{{ Auth::user()->name}}さんの日付別一覧ページ</p>
-  </div>
-  <div class="date">
+<main>
 
 
-    <div>本日の日付{{ date('Y-m-d')}}</div>
+  <form action="/date" method="POST">
+    @csrf
+    @method('post')
+    <div>
+      <h2>勤怠日付別一覧ページ</h2>
+    </div>
+    <div class="date">
 
 
-    <label for="date" class="mr-2 ">
-      日付を選択して下さい
-    </label>
-    <input type="date" name="date" id="date">
-    <button type="submit" class="search" value="">検索</button>
-
-</form>
-</div>
-<div class="main">
-
-  <h3 class="">{{$date}}勤務一覧を表示</h3>
+      <div>本日の日付{{ date('Y-m-d')}}</div>
 
 
+      <label for="date" class="mr-2 ">
+        日付を選択して下さい
+      </label>
+      <input type="date" name="date" id="date">
+      <button type="submit" class="search" value="">検索</button>
 
-
-
-
-
-  <div class="text-ttl">
-    <tr>
-      <th class="text-name">名前</th>
-      <th class="text-name">勤務開始</th>
-      <th class="text-name">勤務終了</th>
-      <th class="text-name">休憩時間</th>
-      <th class="text-name">勤務時間</th>
-    </tr>
+  </form>
   </div>
 
-  <tbody>
-    @foreach($users as $user)
-    <tr>
-      <td class="text">{{$user->user->name}}</td>
-      <td class="text">{{$user->start_work}}</td>
-      <td class="text">{{$user->end_work}}</td>
-      @if (!empty($user->stamp_id))
-      <td class="">{{$rest_time}}</td>
-      @else
-      <td class="table-item">休憩なし</td>
-      @endif
+
+  <h2 class="">{{$date}}勤務一覧を表示</h2>
 
 
-    </tr>
-    @endforeach
+  <table>
+    <thead>
+      <tr>
+        <th class="table-title">名前</th>
+        <th class="table-title">勤務開始</th>
+        <th class="table-title">勤務終了</th>
+        <th class="table-title">休憩時間</th>
+        <th class="table-title">勤務時間</th>
+      </tr>
+    </thead>
 
 
+    <tbody>
+      @foreach($users as $user)
+      <tr>
+        <td class="table-item">{{$user->user->name}}</td>
+        <td class="table-item">{{$user->start_work}}</td>
+        <td class="table-item">{{$user->end_work}}</td>
 
 
+        <td class="table-item">{{$hours}}:{{$minutes}}:{{$seconds}}</td>
 
-    {{ $items->links() }}
-</div>
 
-</tbody>
+        <td class="table-item">{{ gmdate("H:i:s",(strtotime($user->end_work)-strtotime($user->start_work))) }}</td>
+
+
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+  {{ $items->links() }}
+  <div class="elsebody">
+    <div class="elseabout">
+      <p class="elsep">ゲストさん</p>
+      <a href="/register" class="elsea">会員登録</a>
+    </div>
+
+  </div>
+</main>

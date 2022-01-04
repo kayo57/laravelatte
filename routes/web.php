@@ -50,3 +50,4 @@ Route::post('/restend', [AttendanceController::class, 'restend']);
 Route::get('/date', [AttendanceController::class, 'date']);
 
 Route::post('/date', [AttendanceController::class, 'date'])->name('date');
+
